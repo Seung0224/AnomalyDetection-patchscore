@@ -1,16 +1,15 @@
 # AnomalyDetection-PatchCore
 
-**Good-only 기반 이미지 이상 탐지 CLI + PatchCore 오버레이 연동 ( patchcore.py를 첨부 파일과 교체 필수 )**
+※ patchcore.py를 첨부 파일과 교체 필수
+---
+
+**Good-only 기반 이미지 이상 탐지 CLI + PatchCore 오버레이 연동**
 Windows 환경에서 **정상(양품) 데이터만으로 학습**하고, **코사인 거리 임계값**으로 이상을 판정하며, 필요 시 **PatchCore** 결과를 **트립틱/히트맵 오버레이**로 확인할 수 있는 **파이썬 기반 도구**입니다.
-
----
-
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/85ff6f67-d7eb-469a-8bde-8b6c269e2d8f" />
-
----
-
 <img width="1920" height="960" alt="image" src="https://github.com/user-attachments/assets/9f89713b-ee15-4cc6-8860-e6c7a6365cf9" />
 <img width="1920" height="963" alt="image" src="https://github.com/user-attachments/assets/dfc8fb44-2d9a-4cd4-98e8-02a2791ef501" />
+
+---
 
 ## 📦 프로젝트 개요
 
