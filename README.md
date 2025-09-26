@@ -4,6 +4,8 @@
 Windows 환경에서 **정상(양품) 데이터만으로 학습**하고, **코사인 거리 임계값**으로 이상을 판정하며, 필요 시 **PatchCore** 결과를 **트립틱/히트맵 오버레이**로 확인할 수 있는 **파이썬 기반 도구**입니다.
 
 ---
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/85ff6f67-d7eb-469a-8bde-8b6c269e2d8f" />
+---
 
 <img width="1920" height="960" alt="image" src="https://github.com/user-attachments/assets/9f89713b-ee15-4cc6-8860-e6c7a6365cf9" />
 <img width="1920" height="963" alt="image" src="https://github.com/user-attachments/assets/dfc8fb44-2d9a-4cd4-98e8-02a2791ef501" />
@@ -189,7 +191,7 @@ PatchCore는 CNN 피처맵 격자 한 칸을 “패치”로 보고, 정상 패�
 # 초기 개선 방향 
  → 모든 ng 마스크들을 모아서 키우고 합치면 물체가 보통이는 구여기나옴
 
-**“관심 없는 배경은 계산에서 없애고, 물체만 보게 만들어 오검과 흔들림을 줄이는 방법”**이 바로 ROI 마스크 방식이야.
+**“관심 없는 배경은 계산에서 없애고, 물체만 보게 만들어 오검과 흔들림을 줄이는 방법”**이 바로 ROI 마스크 방식
 
 <img width="990" height="985" alt="image" src="https://github.com/user-attachments/assets/12474a1a-f636-4948-9d81-15e1b4846993" />
 <img width="990" height="985" alt="image" src="https://github.com/user-attachments/assets/e9d9f5fa-2d7d-45eb-b6e3-c860b75def29" />
