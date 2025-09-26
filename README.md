@@ -4,8 +4,7 @@
 Windows 환경에서 **정상(양품) 데이터만으로 학습**하고, **코사인 거리 임계값**으로 이상을 판정하며, 필요 시 **PatchCore** 결과를 **트립틱/히트맵 오버레이**로 확인할 수 있는 **파이썬 기반 도구**입니다.
 
 ---
-1. patchcore.py를 첨부 파일과 교체
-2. wrn50_l2l3.onnx 필요
+** patchcore.py를 첨부 파일과 교체
 ---
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/85ff6f67-d7eb-469a-8bde-8b6c269e2d8f" />
