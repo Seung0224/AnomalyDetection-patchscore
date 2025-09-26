@@ -33,7 +33,7 @@ from model_loader import (
 #python .\main.py
 # 첫 1회는 컴파일/캐시로 느릴 수 있음 → 버리고
 
-DEFAULT_MODEL_DIR = r"D:\ADI\patchcore\models\Bottle"
+DEFAULT_MODEL_DIR = r"D:\ADI\patchcore\models"
 PATCHCORE_DIR     = r"D:\ADI\patchcore"
 
 # -----------------------------
@@ -477,7 +477,7 @@ class App(ctk.CTk):
         t0 = time.perf_counter()
         try:
             overlay_img, score = anomaly_detect(img=image_snapshot, model=self.model, device=self.device, index=(self.image_index + 1),
-                                                total=len(self.image_list), threshold=2.0 )
+                                                total=len(self.image_list), threshold=2.7)
             print("Anomaly Score:", score)
             err = None
         except Exception as e:
