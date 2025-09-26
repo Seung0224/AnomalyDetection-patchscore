@@ -124,14 +124,19 @@ def draw_status_frame(
     index: int = None,           # 1-based index
     total: int = None,           # total count
     thickness: int = 10,
-    marginX: int = 25,
+    marginX: int = 20,
     marginY: int = 16,
-    font_size: int = 24,         # ← 글씨 크기 키움 (원하면 조절)
+    font_size: int = 30,
+    bg_alpha: int = 20,         # 0~255 (0=완전 투명, 255=불투명)
+    bg_color=(255, 255, 255),
 ) -> Image.Image:
-    """이미지에 상태(OK/NG) 라벨과 테두리를 그려 반환."""
-    img = img_pil.convert("RGB").copy()
+    """이미지에 상태 라벨과 테두리를 그려 반환. 라벨 예: 'NG → Score: 1.123 (1/20)'"""
+    orig_mode = img_pil.mode
+    img = img_pil.convert("RGBA")
+
     w, h = img.size
-    draw = ImageDraw.Draw(img)
+    overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(overlay)
 
     ok = str(status).upper() == "OK"
     color = (46, 204, 113) if ok else (231, 76, 60)  # 초록/빨강
@@ -140,16 +145,15 @@ def draw_status_frame(
     for t in range(thickness):
         draw.rectangle([t, t, w - 1 - t, h - 1 - t], outline=color)
 
-    # 2) 라벨 텍스트 만들기  (예: "1/20 (OK) 0.873")
-    parts = []
-    if index is not None and total is not None and total > 0:
-        parts.append(f"{index}/{total}")
-    parts.append(f"({status.upper()})")
+    # 2) 라벨 문자열 구성: "NG → Score: 1.123 (1/20)"
+    label_parts = [status.upper()]
     if score is not None:
-        parts.append(f"{score:.3f}")
-    label = " ".join(parts)
+        label_parts.append(f"→ Score: {score:.3f}")
+    if index is not None and total is not None and total > 0:
+        label_parts.append(f"({index}/{total})")
+    label = " ".join(label_parts)
 
-    # 3) 폰트 및 텍스트 크기 계산
+    # 3) 폰트 및 텍스트 크기
     try:
         font = ImageFont.truetype("arial.ttf", font_size)
     except Exception:
@@ -163,17 +167,23 @@ def draw_status_frame(
     x = w - marginX - tw
     y = marginY
 
-    # 4) 흰 배경 박스 (가독성)
+    # 4) 반투명 배경 박스
     bg_pad = 6
-    draw.rectangle([x - bg_pad, y - bg_pad, x + tw + bg_pad, y + th + bg_pad], fill=(255, 255, 255))
+    if bg_alpha > 0:
+        draw.rectangle(
+            [x - bg_pad, y - bg_pad, x + tw + bg_pad, y + th + bg_pad],
+            fill=(*bg_color, max(0, min(255, bg_alpha)))
+        )
 
-    # 5) 텍스트: 글자색 = 테두리색, 얇은 검은 외곽선으로 가독성 보강
+    # 5) 텍스트 그리기 (가독성 보강용 외곽선)
     try:
         draw.text((x, y), label, fill=color, font=font, stroke_width=1, stroke_fill=(0, 0, 0))
     except TypeError:
-        # 구형 Pillow 대비
         for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
             draw.text((x+dx, y+dy), label, fill=(0,0,0), font=font)
         draw.text((x, y), label, fill=color, font=font)
 
-    return img
+    out = Image.alpha_composite(img, overlay)
+    if orig_mode != "RGBA":
+        out = out.convert(orig_mode)
+    return out
