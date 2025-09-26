@@ -175,12 +175,40 @@ AnomalyDetection/
 
 ---
 
-## 📄 라이선스
+## 📄 비고
 
-프로젝트 루트의 `LICENSE` 파일을 확인하세요. (미동봉 시 추후 추가 예정)
+PatchCore는 CNN 피처맵 격자 한 칸을 “패치”로 보고, 정상 패치들의 벡터 뱅크와의 “거리”로 이상을 찾는 방법
+우리가 한 ROI 마스크는 “배경 패치”를 아예 없애서, 이 패치 비교가 물체에만 집중되도록 만든 거고
+
+
+# 흰색(1) 살리기, 검은색(0) 죽이기
+ → 배경은 환경마다 늘 달라져서 정상이여도 다르게 보이기 쉬움
+ → 배경을 아예 계산에서 빼버리면 물체만보고 판단하기때문에 오검이 줄어들고 속도도빨라짐
+ → 바깥은 오브젝트의 평균색으로 칠하고 물체부분만 원래색으로 유지
+
+# 초기 개선 방향 
+ → 모든 ng 마스크들을 모아서 키우고 합치면 물체가 보통이는 구여기나옴
+
+**“관심 없는 배경은 계산에서 없애고, 물체만 보게 만들어 오검과 흔들림을 줄이는 방법”**이 바로 ROI 마스크 방식이야.
+
+<img width="990" height="985" alt="image" src="https://github.com/user-attachments/assets/12474a1a-f636-4948-9d81-15e1b4846993" />
+<img width="990" height="985" alt="image" src="https://github.com/user-attachments/assets/e9d9f5fa-2d7d-45eb-b6e3-c860b75def29" />
 
 ---
 
-## 🙌 기여
+<img width="990" height="985" alt="image" src="https://github.com/user-attachments/assets/6f7d1c6d-2129-4efc-b5ce-3b4094ee0ded" />
 
-이슈/PR 환영합니다. 버그 재현용 샘플 이미지와 로그(가능 시 콘솔 출력)를 첨부해 주세요.
+→ 근데 이방식으로쓰면 사실 불량 위치를
+특정하는것이나 마찬가지라 사실 AnomalyDetection이라고 볼수없음 차라리 이렇게할꺼면 Yolo Segmentation을 쓰는게 나을지도? 본래 논문의취지와 맞지않음
+
+# 중기 개선 방향 
+→ 정상 이미지들을 어느정도 커버하는 마스크를 만들어서 학습을 진행
+→ ROI를 특정함으로써 다른 외부요인에 대한 특징이적고 정확히 OBJECT에 대해서만 학습할수있음
+→ 기존대비 Heatmap 비교 시 99% 성능 확보
+
+<img width="1024" height="1024" alt="Cable_Mask" src="https://github.com/user-attachments/assets/389b81c4-94a3-4d2e-9fae-0271a6f5e1a3" />
+<img width="1928" height="1080" alt="캡처" src="https://github.com/user-attachments/assets/6686c747-9b5c-4c6c-82fc-694af723da74" />
+
+# 말기 개선 방향 
+→ 백본(특징추출기)를 기존 pytorch기반 파일에서 onnx를 거쳐 openvino 형식으로 변경함으로써 추론시간 100~200ms 감소 확인 완료 (근데 Intel에서만 가능하고 AMD는 안될수도있음)
+→ 설정에서 쓰레드 수 코어 수 등으로 최적화가 필요한 부분
