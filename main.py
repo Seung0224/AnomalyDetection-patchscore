@@ -33,7 +33,7 @@ from model_loader import (
 #python .\main.py
 # 첫 1회는 컴파일/캐시로 느릴 수 있음 → 버리고
 
-DEFAULT_MODEL_DIR = r"D:\ADI\patchcore\models\Cable_OK_ROI_SPEED"
+DEFAULT_MODEL_DIR = r"D:\ADI\patchcore\models\Bottle"
 PATCHCORE_DIR     = r"D:\ADI\patchcore"
 
 # -----------------------------
@@ -379,7 +379,7 @@ class App(ctk.CTk):
             return
         path = filedialog.askopenfilename(
             filetypes=[("Images","*.png;*.jpg;*.jpeg;*.bmp")],
-            initialdir=r"D:\ADI\dataset\cable\test"
+            initialdir=r"D:\ADI\dataset"
         )
         self.current_image_path = path
         if not path:
